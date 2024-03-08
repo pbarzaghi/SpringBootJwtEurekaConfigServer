@@ -53,22 +53,19 @@ public interface TecnicoRepository extends JpaRepository<Tecnico,Integer> {
     );
 
 
-    @Query(value = "SELECT " +
-         " t.id, t.nombre,t.mail,t.num_telefono,"+
-         " MIN(tp.tiempo_estimado_dias) as  tiempo_estimado_dias "+
-          " FROM " +
-          " tecnico t" +
-          " JOIN " +
-          " incidencia i ON t.id = i.tecnico_id " +
-          " JOIN" +
-          " tipoproblema tp ON i.tipo_problema_id = tp.id " +
-          " WHERE " +
-          " i.resuelto = TRUE " +
-          " GROUP BY " +
-          "  t.id, t.nombre " +
-          " ORDER BY " +
-          " tiempo_estimado_dias ASC " ,
-            nativeQuery = true)
 
+   @Query(  "SELECT " +
+           "   t, MIN(tp.tiempoEnDias) as minTiempoEnDias " +
+           " FROM " +
+           "   Tecnico t " +
+           " INNER JOIN Incidencia i ON t = i.tecnico " +
+           " INNER JOIN TipoProblema tp ON i.tipoProblema = tp " +
+           " WHERE " +
+           "   i.resuelto = TRUE " +
+           " GROUP BY " +
+           "   t " +
+           " ORDER BY " +
+           "   minTiempoEnDias ASC"
+           )
     public List<Tecnico> findTecnicoMasRapidoResolvioLaIncidencia() ;
 }
