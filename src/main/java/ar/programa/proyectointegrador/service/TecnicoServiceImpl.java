@@ -4,6 +4,7 @@ import ar.programa.proyectointegrador.entity.Especialidad;
 import ar.programa.proyectointegrador.entity.Incidencia;
 
 import ar.programa.proyectointegrador.entity.Tecnico;
+import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.TecnicoRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -11,6 +12,7 @@ import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +33,9 @@ public class TecnicoServiceImpl implements TecnicoService{
 
     @Transactional
     @Override
-    public List<Tecnico> findAll() {
-        return tecnicoRepository.findAll();
+    public ResponseEntity<?> findAll() {
+        return   ResponseEntity.ok(MapperEntity.mapper.toDtoListTecnico(
+                tecnicoRepository.findAll()));
     }
     @Transactional
     @Override

@@ -4,25 +4,35 @@ package ar.programa.proyectointegrador.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
-@Getter
-@Setter
+
+
+
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 @Table(name="cliente")
-/**
+
+/*
  @author pabloBarzaghi
  */
-public class Cliente extends BaseEntity {
+public class Cliente  implements Serializable{
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
+     private Integer id;
 
 
-    @Column(name="razonSocial")
     private String razonSocial;
 
     @Column(name="CUIT")
     private String cuit;
 
-    @Column(name="mail")
     private String mail;
 
 

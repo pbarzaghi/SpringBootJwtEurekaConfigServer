@@ -3,9 +3,11 @@ package ar.programa.proyectointegrador.service;
 import ar.programa.proyectointegrador.entity.Especialidad;
 import ar.programa.proyectointegrador.entity.Incidencia;
 import ar.programa.proyectointegrador.entity.TipoProblema;
+import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.TipoProblemaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +21,9 @@ import java.util.Optional;
 public class TipoProblemaServiceImpl implements TipoProblemaService{
    private final  TipoProblemaRepository tipoProblemaRepository;
     @Override
-    public List<TipoProblema> findAll()  {
-        return tipoProblemaRepository.findAll();
+    public ResponseEntity<?> findAll()  {
+        return   ResponseEntity.ok(MapperEntity.mapper.toDtoListTipoProblema(
+                tipoProblemaRepository.findAll()));
     }
 
     @Override

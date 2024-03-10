@@ -6,19 +6,23 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Table(name="tecnico")
 /**
  @author pabloBarzaghi
  */
-public class Tecnico extends BaseEntity{
+public class Tecnico implements Serializable {
 
-
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer id;
     @Column(name="nombre")
     private String nombre;
     @Column(name="mail")

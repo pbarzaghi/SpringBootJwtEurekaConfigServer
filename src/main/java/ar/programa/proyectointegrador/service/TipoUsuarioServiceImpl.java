@@ -1,9 +1,11 @@
 package ar.programa.proyectointegrador.service;
 
 import ar.programa.proyectointegrador.entity.TipoUsuario;
+import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.TipoUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +20,10 @@ public class TipoUsuarioServiceImpl implements TipoUsuarioService{
     private final  TipoUsuarioRepository tipoUsuarioRepository;
     @Transactional(readOnly = true)
     @Override
-    public List<TipoUsuario> findAll(){
-        return tipoUsuarioRepository.findAll();
+    public ResponseEntity<?> findAll(){
+        return   ResponseEntity.ok(MapperEntity.mapper.toDtoListTipoUsuario(
+                tipoUsuarioRepository.findAll())
+        );
     }
     @Transactional(readOnly = true)
     @Override

@@ -1,11 +1,13 @@
 package ar.programa.proyectointegrador.service;
 
+import ar.programa.proyectointegrador.dto.ClienteDto;
 import ar.programa.proyectointegrador.entity.Cliente;
 import ar.programa.proyectointegrador.entity.Incidencia;
 import ar.programa.proyectointegrador.entity.Servicio;
+import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +23,9 @@ public class ClienteServiceImpl implements ClienteService{
     private final  ClienteRepository clienteRepository;
     @Transactional(readOnly = true)
     @Override
-    public List<Cliente> findAll()  {
-        return clienteRepository.findAll();
+    public ResponseEntity<?> findAll()  {
+
+        return   ResponseEntity.ok(MapperEntity.mapper.toDtoListCliente(clienteRepository.findAll()));
     }
     @Transactional
     @Override

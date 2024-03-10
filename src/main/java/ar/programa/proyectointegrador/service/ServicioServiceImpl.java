@@ -2,9 +2,11 @@ package ar.programa.proyectointegrador.service;
 
 import ar.programa.proyectointegrador.entity.DetalleIncidencia;
 import ar.programa.proyectointegrador.entity.Servicio;
+import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.ServicioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +20,9 @@ public class ServicioServiceImpl implements ServicioService {
 
     private final ServicioRepository servicioRepository;
     @Override
-    public List<Servicio> findAll()  {
-        return servicioRepository.findAll();
+    public ResponseEntity<?> findAll()  {
+        return   ResponseEntity.ok(MapperEntity.mapper.toDtoListServicio(
+                servicioRepository.findAll()));
     }
 
     @Override

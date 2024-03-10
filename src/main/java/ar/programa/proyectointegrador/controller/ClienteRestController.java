@@ -9,7 +9,10 @@ import ar.programa.proyectointegrador.entity.Tecnico;
 import ar.programa.proyectointegrador.service.ClienteService;
 import ar.programa.proyectointegrador.service.IncidenciaService;
 import ar.programa.proyectointegrador.service.ServicioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,49 +21,51 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/clientes")
+@RequiredArgsConstructor
 public class ClienteRestController {
-    @Autowired
-    ClienteService clienteService;
-    @Autowired
-    ServicioService servicioService;
-   @Autowired
-   IncidenciaService incidenciaService;
 
-    @PostMapping("/cliente")
-    public ClienteDto CreateCliente(@Validated @RequestBody Map<String, Object> body) {
+    private final ClienteService clienteService;
+    private final ServicioService servicioService;
+    private final IncidenciaService incidenciaService;
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<?> CreateCliente(@RequestBody Map<String, Object> body) {
 
         String razonSocial= String.valueOf(body.get("razonSocial"));
         String cuit=String.valueOf(body.get("cuit"));
         String mail=String.valueOf(body.get("mail"));
 
-        Cliente clienteCreate=new Cliente();
-        clienteCreate.setRazonSocial(razonSocial);
-        clienteCreate.setCuit(cuit);
-        clienteCreate.setMail(mail);
-        clienteCreate=clienteService.save(clienteCreate);
-        return ClienteDto.builder().razonSocial(clienteCreate.getRazonSocial())
-                .cuit(clienteCreate.getCuit())
-                .mail(clienteCreate.getMail()).build();
+        Cliente clienteCreate=Cliente.builder()
+                             .razonSocial(razonSocial)
+                             .cuit(cuit).mail(mail)
+                             .build();
+
+
+        return ResponseEntity.ok(clienteService.save(clienteCreate));
+
     }
     // Update
     @PutMapping("/clienteServicio/{id}")
-    public String updateClienteServicio(@Validated @RequestBody Map<String,Object> body,
+    public ResponseEntity<?> updateClienteServicio(@Validated @RequestBody Map<String,Object> body,
                                          @PathVariable("id") Integer id){
-        Cliente cliente=clienteService.findById(id).get();
+        Cliente cliente=   clienteService.findById(id).get();
         if(cliente != null){
             String idServicio=String.valueOf(body.get("idServicio"));
-            Servicio servicio=  servicioService.findById(Integer.valueOf(idServicio)).get();
+            Servicio servicio= ( servicioService.findById(Integer.valueOf(idServicio)).get() );
            cliente= clienteService.addServicio(cliente,servicio);
            if(cliente!=null)
-           return "OK - Servicio "+ idServicio +"agregado al cliente "+id;
-        }
+               return ResponseEntity.ok("OK - Servicio "+ idServicio +"agregado al cliente "+id);
 
-        return "Fallo - No se agrego el servicio al cliente "+id;
+            }
+        return ResponseEntity.ok("Fallo - No se agrego el servicio al cliente "+id);
+
 
     }
 
     @PutMapping("/clienteIncidencia/{id}")
-    public String updateClienteIncidencia(@Validated @RequestBody Map<String,Object> body,
+    public ResponseEntity<?> updateClienteIncidencia(@Validated @RequestBody Map<String,Object> body,
                                         @PathVariable("id") Integer id){
         Cliente cliente=clienteService.findById(id).get();
         if(cliente != null){
@@ -68,15 +73,15 @@ public class ClienteRestController {
             Incidencia incidencia=  incidenciaService.findById(Integer.valueOf(idIncidencia)).get();
             cliente= clienteService.addIncidencia(cliente,incidencia);
             if(cliente!=null)
-                return "OK - Incidencia "+ idIncidencia +"agregado al cliente "+id;
+               return ResponseEntity.ok("OK - Incidencia "+ idIncidencia +"agregado al cliente "+id);
         }
 
-        return "Fallo - No se agrego la incidencia al cliente "+id;
+        return ResponseEntity.ok("Fallo - No se agrego la incidencia al cliente "+id);
 
     }
 
-    @PutMapping("/cliente/{id}")
-    public ClienteDto updateCliente(@Validated @RequestBody Map<String, Object> body,
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateCliente(@RequestBody Map<String, Object> body,
                                     @PathVariable("id") Integer id) {
 
         Cliente clienteUpdate = clienteService.findById(id).get();
@@ -92,34 +97,36 @@ public class ClienteRestController {
              clienteUpdate.setCuit(cuit);
 
 
-
-        clienteUpdate=clienteService.update(clienteUpdate);
-
-        return ClienteDto.builder().razonSocial(clienteUpdate.getRazonSocial())
-                .mail(clienteUpdate.getMail())
-                .cuit(clienteUpdate.getCuit()).build();
+            return ResponseEntity.ok(clienteService.update(clienteUpdate));
+//        clienteUpdate=clienteService.update(clienteUpdate);
+//
+//        return ClienteDto.builder().razonSocial(clienteUpdate.getRazonSocial())
+//                .mail(clienteUpdate.getMail())
+//                .cuit(clienteUpdate.getCuit()).build();
 
 
     }
 
-    @GetMapping("/clientes")
-    public List<ClienteDto> getAllClientes() {
-        List<Cliente> clienteList = clienteService.findAll();
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllClientes() {
 
-        return clienteList.stream()
-                .map(t -> ClienteDto.builder()
-                        .razonSocial(t.getRazonSocial())
+             return ResponseEntity.ok(clienteService.findAll());
+ 
+     /*    return ResponseEntity.ok(clienteList.stream()
+                 .map(t -> ClienteDto.builder()
+                         .razonSocial(t.getRazonSocial())
                         .cuit(t.getCuit())
                         .mail(t.getMail())
                         .build())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+    */
     }
 
 
-    @DeleteMapping("/cliente/{id}")
-    public String deleteClienteById(@PathVariable("id") Integer id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteClienteById(@PathVariable("id") Integer id){
         clienteService.deleteById(id);
-        return "Cliente Eliminado correctamente";
+        return ResponseEntity.ok( "Cliente Eliminado correctamente");
     }
 
 }

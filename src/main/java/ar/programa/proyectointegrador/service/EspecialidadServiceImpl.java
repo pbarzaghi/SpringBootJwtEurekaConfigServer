@@ -1,9 +1,11 @@
 package ar.programa.proyectointegrador.service;
 
 import ar.programa.proyectointegrador.entity.Especialidad;
+import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.EspecialidadRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +21,9 @@ public class EspecialidadServiceImpl implements EspecialidadService {
      private final EspecialidadRepository especialidadRepository;
     @Transactional(readOnly = true)
     @Override
-    public List<Especialidad> findAll() {
-        return especialidadRepository.findAll();
+    public ResponseEntity<?> findAll() {
+       return ResponseEntity.ok(MapperEntity.mapper.toDtoListEspecialidad(
+                especialidadRepository.findAll()));
     }
     @Transactional
     @Override

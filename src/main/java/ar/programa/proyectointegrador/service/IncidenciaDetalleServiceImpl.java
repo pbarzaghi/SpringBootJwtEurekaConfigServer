@@ -2,9 +2,11 @@ package ar.programa.proyectointegrador.service;
 
 import ar.programa.proyectointegrador.entity.DetalleIncidencia;
 import ar.programa.proyectointegrador.entity.Incidencia;
+import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.IncidenciaDetalleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +21,9 @@ public class IncidenciaDetalleServiceImpl implements IncidenciaDetalleService{
 
     private final IncidenciaDetalleRepository incidenciaDetalleRepository;
     @Override
-    public List<DetalleIncidencia> findAll() {
-        return incidenciaDetalleRepository.findAll();
+    public ResponseEntity<?> findAll() {
+        return   ResponseEntity.ok(MapperEntity.mapper.toDtoListDetalleIncidencia(
+                incidenciaDetalleRepository.findAll()));
     }
 
     @Override
