@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Builder
 @Entity
 @Table(name="detalleincidencia")
-/**
+/*
  @author pabloBarzaghi
  */
 public class DetalleIncidencia implements Serializable {

@@ -1,6 +1,5 @@
 package ar.programa.proyectointegrador.dto;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
 @Data

@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Table(name="incidencia")
-/**
+/*
  @author pabloBarzaghi
  */
 public class Incidencia  implements Serializable {

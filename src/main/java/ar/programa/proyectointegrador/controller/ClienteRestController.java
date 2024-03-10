@@ -1,24 +1,22 @@
 package ar.programa.proyectointegrador.controller;
 
-import ar.programa.proyectointegrador.dto.ClienteDto;
-import ar.programa.proyectointegrador.dto.TecnicoDto;
+
 import ar.programa.proyectointegrador.entity.Cliente;
 import ar.programa.proyectointegrador.entity.Incidencia;
 import ar.programa.proyectointegrador.entity.Servicio;
-import ar.programa.proyectointegrador.entity.Tecnico;
+
 import ar.programa.proyectointegrador.service.ClienteService;
 import ar.programa.proyectointegrador.service.IncidenciaService;
 import ar.programa.proyectointegrador.service.ServicioService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/clientes")

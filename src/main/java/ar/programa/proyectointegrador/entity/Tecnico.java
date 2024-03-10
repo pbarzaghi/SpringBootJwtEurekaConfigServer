@@ -1,6 +1,6 @@
 package ar.programa.proyectointegrador.entity;
 
-import ar.programa.proyectointegrador.dto.TecnicoDto;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Table(name="tecnico")
-/**
+/*
  @author pabloBarzaghi
  */
 public class Tecnico implements Serializable {

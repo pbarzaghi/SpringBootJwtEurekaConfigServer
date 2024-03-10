@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Table(name="servicio")
-/**
+/*
  @author pabloBarzaghi
  */
 public class Servicio implements Serializable {

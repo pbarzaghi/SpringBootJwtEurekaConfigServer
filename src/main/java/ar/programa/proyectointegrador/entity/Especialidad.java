@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Table(name="especialidad")
-/**
+/*
  @author pabloBarzaghi
  */
 public class Especialidad   implements Serializable {

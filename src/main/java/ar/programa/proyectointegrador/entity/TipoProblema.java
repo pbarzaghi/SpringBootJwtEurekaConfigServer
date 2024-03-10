@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @Builder
 @Table(name="tipoproblema")
-/**
+/*
  @author pabloBarzaghi
  */
 public class TipoProblema  implements Serializable {

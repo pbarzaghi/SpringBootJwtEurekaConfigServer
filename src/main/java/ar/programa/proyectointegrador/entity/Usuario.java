@@ -1,6 +1,5 @@
 package ar.programa.proyectointegrador.entity;
 
-import ar.programa.proyectointegrador.enumerado.TipoUsuarioEmun;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +11,8 @@ import java.io.Serializable;
 @Data
 @Builder
 @Table (name="usuario")
-/**
+
+/*
  @author pabloBarzaghi
  */
 
