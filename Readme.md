@@ -8,9 +8,6 @@ Pablo Barzaghi
 En la carpeta src\main\resources se encuetra el der
      modeloDer.png
 
-     Dicho modelo fue realizado y analizado junto con el profesor en clase.
-     Me aboque que las anotaciones de las entidades me dieran el mismo
-     modelo de datos realizando la creacion de tabla de forma inversa.
 
 2- Codigo con modelacion de classes. El codigo debe estar subido al repositorio del github
 
