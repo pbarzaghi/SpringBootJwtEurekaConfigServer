@@ -2,8 +2,7 @@ package ar.programa.proyectointegrador.service;
 
 
 import ar.programa.proyectointegrador.dto.ClienteDto;
-import ar.programa.proyectointegrador.dto.IncidenciaDto;
-import ar.programa.proyectointegrador.dto.ServicioDto;
+
 import ar.programa.proyectointegrador.entity.Cliente;
 import ar.programa.proyectointegrador.entity.Incidencia;
 import ar.programa.proyectointegrador.entity.Servicio;
