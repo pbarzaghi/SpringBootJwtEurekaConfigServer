@@ -33,12 +33,13 @@ public class Incidencia  implements Serializable {
     @Column(name="resuelto")
     private Boolean resuelto;
 
-    @JsonIgnore
-    @OneToMany
-    List<DetalleIncidencia> detalleincidencia;
 
+   @OneToMany(mappedBy = "incidencia"  )
+   private List<DetalleIncidencia> detallesincidencias;
 
+    @JsonBackReference
     @ManyToOne
+    @JoinColumn(name="cliente_id", referencedColumnName="id")
     private Cliente cliente;
 
     @JsonIgnore

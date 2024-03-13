@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ServicioDto {
+    private Integer id;
     private String nombre;
 
 

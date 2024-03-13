@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 public class DetalleIncidenciaDto {
 
+    private Integer id;
     private String detalleProblema;
 
     private String descripcionProblema;

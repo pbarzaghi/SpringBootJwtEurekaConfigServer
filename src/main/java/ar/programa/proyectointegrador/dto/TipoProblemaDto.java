@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 
 public class TipoProblemaDto {
-
+    private Integer id;
     private String tipo;
     private Integer tiempoEnDias;
 

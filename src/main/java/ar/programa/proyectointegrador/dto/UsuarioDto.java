@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsuarioDto {
-
+    private Integer id;
     private String nombreUsuario;
     private String pass;
     private Integer tipousuario;

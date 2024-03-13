@@ -4,7 +4,6 @@ import ar.programa.proyectointegrador.entity.TipoUsuario;
 import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.TipoUsuarioRepository;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

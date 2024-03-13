@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
 import java.util.List;
@@ -34,11 +36,14 @@ public class Tecnico implements Serializable {
     @OneToMany
     List<Incidencia> incidencias;
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY )
+
     @JoinTable(
             name = "tecnico_especialidad",
             joinColumns = @JoinColumn(name = "tecnico_id"),
-            inverseJoinColumns = @JoinColumn(name = "especialidad_id"))
+            inverseJoinColumns = @JoinColumn(name = "especialidad_id")
+       )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     List<Especialidad> especialidades;
 
 

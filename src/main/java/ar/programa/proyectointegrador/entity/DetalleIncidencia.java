@@ -23,11 +23,12 @@ public class DetalleIncidencia implements Serializable {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name="incidencia_id", referencedColumnName="id")
+    @JoinColumn(name = "incidencia_id", referencedColumnName = "id")
     private Incidencia incidencia;
 
+
     @ManyToOne
-    @JoinColumn(name="servicio_id", referencedColumnName="id")
+    @JoinColumn(name="servicio_id",referencedColumnName="id")
     private Servicio servicio;
 
 

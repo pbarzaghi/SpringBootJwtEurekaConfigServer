@@ -7,9 +7,7 @@ import org.mapstruct.factory.Mappers;
 
 
 import java.util.List;
-//@Mapper(
-//        componentModel = MappingConstants.ComponentModel.SPRING
-//)
+
 @Mapper(componentModel = "spring")
 public interface MapperEntity{
     MapperEntity  mapper= Mappers.getMapper(MapperEntity.class);

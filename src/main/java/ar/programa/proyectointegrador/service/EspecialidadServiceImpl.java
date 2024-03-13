@@ -1,16 +1,16 @@
 package ar.programa.proyectointegrador.service;
 
+import ar.programa.proyectointegrador.dto.EspecialidadDto;
 import ar.programa.proyectointegrador.entity.Especialidad;
 import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.EspecialidadRepository;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-/**
+/*
  @author pabloBarzaghi
  */
 @Service
@@ -25,22 +25,34 @@ public class EspecialidadServiceImpl implements EspecialidadService {
     }
     @Transactional
     @Override
-    public Especialidad save(Especialidad especialidad)   {
-        return especialidadRepository.save(especialidad);
+    public EspecialidadDto save(EspecialidadDto especialidadDto)   {
+        return  MapperEntity.mapper.toDto(
+                especialidadRepository.save(MapperEntity.mapper.toBean(especialidadDto))
+                );
     }
     @Transactional
     @Override
-    public Especialidad update(Especialidad especialidad)   {
-        return especialidadRepository.save(especialidad);
+    public EspecialidadDto update(EspecialidadDto especialidadDto)   {
+        return  MapperEntity.mapper.toDto(
+                especialidadRepository.save(MapperEntity.mapper.toBean(especialidadDto))
+        );
     }
     @Transactional
     @Override
-    public Optional<Especialidad> findById(Integer integer)  {
-        return especialidadRepository.findById(integer);
+    public Optional<EspecialidadDto> findById(Integer integer)  {
+
+        Especialidad especialidad= especialidadRepository.findById(integer).orElse(null);
+        if ( especialidad == null)
+            return Optional.ofNullable(EspecialidadDto.builder().build());
+        else
+            return Optional.ofNullable(MapperEntity.mapper.toDto(especialidad));
     }
+
+
     @Transactional
     @Override
     public void deleteById(Integer integer)  {
+
         especialidadRepository.deleteById(integer);
     }
     @Transactional

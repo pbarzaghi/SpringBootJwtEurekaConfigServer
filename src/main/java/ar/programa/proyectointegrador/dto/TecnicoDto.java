@@ -9,6 +9,7 @@ import lombok.*;
 
 public class TecnicoDto {
 
+    private Integer id;
     private String nombre;
     private String mail;
     private String nroTel;

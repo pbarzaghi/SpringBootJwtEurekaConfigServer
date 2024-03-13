@@ -1,5 +1,6 @@
 package ar.programa.proyectointegrador.service;
 
+import ar.programa.proyectointegrador.entity.Cliente;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Optional;

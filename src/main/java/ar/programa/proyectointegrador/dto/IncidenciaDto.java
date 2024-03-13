@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 
 public class IncidenciaDto {
-
+    private Integer id;
     private String alias;
     private String descripcion;
     private LocalDateTime fechaEstimada;

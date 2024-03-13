@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TipoUsuarioDto {
+    private Integer id;
     private String tipo;
 }

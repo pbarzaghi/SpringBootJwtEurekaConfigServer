@@ -26,11 +26,9 @@ public class Servicio implements Serializable {
     private String nombre;
 
     @JsonManagedReference
-    @ManyToMany(mappedBy = "servicios")
+    @ManyToMany(mappedBy = "servicios",cascade = CascadeType.ALL)
     List<Cliente> clientes;
 
-    @OneToMany
-    List<DetalleIncidencia> detalleincidencia;
-
-
+    @OneToMany(mappedBy = "servicio",cascade = CascadeType.PERSIST )
+    private List<DetalleIncidencia> detallesincidencias;
 }

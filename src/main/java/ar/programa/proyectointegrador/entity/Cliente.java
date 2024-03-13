@@ -36,15 +36,16 @@ public class Cliente  implements Serializable{
     private String mail;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(
             name = "cliente_servicio",
             joinColumns = @JoinColumn(name = "cliente_id"),
             inverseJoinColumns = @JoinColumn(name = "servicio_id"))
     List<Servicio> servicios;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    List<Incidencia> incidencias;
+
+    @OneToMany(mappedBy = "cliente" )
+     List<Incidencia> incidencias;
 
 
 
