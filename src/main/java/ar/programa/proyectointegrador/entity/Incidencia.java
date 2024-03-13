@@ -6,16 +6,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-@Getter
-@Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Table(name="incidencia")
-/**
+/*
  @author pabloBarzaghi
  */
-public class Incidencia extends BaseEntity {
+public class Incidencia  implements Serializable {
+  @Id
+  @GeneratedValue(strategy= GenerationType.IDENTITY)
+  @Column(name="id")
+  private Integer id;
 
   @Column(name="alias")
     private String alias;
@@ -27,12 +33,13 @@ public class Incidencia extends BaseEntity {
     @Column(name="resuelto")
     private Boolean resuelto;
 
-    @JsonIgnore
-    @OneToMany
-    List<DetalleIncidencia> detalleincidencia;
 
+   @OneToMany(mappedBy = "incidencia"  )
+   private List<DetalleIncidencia> detallesincidencias;
 
+    @JsonBackReference
     @ManyToOne
+    @JoinColumn(name="cliente_id", referencedColumnName="id")
     private Cliente cliente;
 
     @JsonIgnore

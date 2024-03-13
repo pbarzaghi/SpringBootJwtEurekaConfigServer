@@ -1,13 +1,12 @@
 package ar.programa.proyectointegrador.service;
 
-import ar.programa.proyectointegrador.entity.Cliente;
-import ar.programa.proyectointegrador.entity.Especialidad;
-import ar.programa.proyectointegrador.entity.Incidencia;
-import ar.programa.proyectointegrador.entity.TipoProblema;
-/**
+
+import ar.programa.proyectointegrador.dto.TipoProblemaDto;
+
+/*
  @author pabloBarzaghi
  */
-public interface TipoProblemaService extends CrudService<TipoProblema,Integer>{
-    public TipoProblema addEspecialidad(TipoProblema tipoProblema, Especialidad especialidad  );
-    public TipoProblema addIncidencia(TipoProblema tipoProblema, Incidencia incidencia  );
+public interface TipoProblemaService extends CrudService<TipoProblemaDto,Integer>{
+    public TipoProblemaDto addEspecialidad(Integer idTipoProblema, Integer idEspecialidad  );
+    public TipoProblemaDto addIncidencia(Integer idTipoProblema, Integer idIncidencia  );
 }

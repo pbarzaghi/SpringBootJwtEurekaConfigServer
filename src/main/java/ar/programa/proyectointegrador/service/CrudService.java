@@ -1,6 +1,8 @@
 package ar.programa.proyectointegrador.service;
 
-import java.util.List;
+import ar.programa.proyectointegrador.entity.Cliente;
+import org.springframework.http.ResponseEntity;
+
 import java.util.Optional;
 
 /**
@@ -8,7 +10,7 @@ import java.util.Optional;
  * @author pbarzaghi
  */
 public interface CrudService<T,ID> {
-    List<T> findAll() ;
+    ResponseEntity<?> findAll() ;
     T save(T t);
     T update(T t);
     Optional<T> findById(ID id) ;

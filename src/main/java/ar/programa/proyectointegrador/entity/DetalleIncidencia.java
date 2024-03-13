@@ -3,24 +3,32 @@ package ar.programa.proyectointegrador.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
+import java.io.Serializable;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 @Entity
 @Table(name="detalleincidencia")
-/**
+/*
  @author pabloBarzaghi
  */
-public class DetalleIncidencia extends BaseEntity{
+public class DetalleIncidencia implements Serializable {
 
-
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name="incidencia_id", referencedColumnName="id")
+    @JoinColumn(name = "incidencia_id", referencedColumnName = "id")
     private Incidencia incidencia;
 
+
     @ManyToOne
-    @JoinColumn(name="servicio_id", referencedColumnName="id")
+    @JoinColumn(name="servicio_id",referencedColumnName="id")
     private Servicio servicio;
 
 

@@ -2,7 +2,7 @@ package ar.programa.proyectointegrador.service;
 
 import ar.programa.proyectointegrador.entity.Usuario;
 
-/**
+/*
  * @author  pabloBarzaghi
  */
 

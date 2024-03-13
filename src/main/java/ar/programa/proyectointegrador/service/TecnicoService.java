@@ -1,20 +1,20 @@
 package ar.programa.proyectointegrador.service;
 
-import ar.programa.proyectointegrador.entity.*;
 
+import ar.programa.proyectointegrador.dto.TecnicoDto;
 import java.util.List;
 
-/**
+/*
  @author pabloBarzaghi
  */
-public interface TecnicoService extends CrudService<Tecnico,Integer> {
+public interface TecnicoService extends CrudService<TecnicoDto,Integer> {
 
-      public Tecnico addIncidencia(Tecnico tecnico, Incidencia incidencia  );
-      public Tecnico addEspecialidad(Tecnico tecnico, Especialidad especialidad  );
+      public TecnicoDto addIncidencia(Integer idTecnico, Integer idIncidencia  );
+      public TecnicoDto addEspecialidad(Integer idTecnico,Integer idEspecialidad);
 
-      List<Tecnico> findTecnicosConMasIncidentesResueltosEnNDias(Integer dias);
-      List<Tecnico> findTecnicosConMasIncidentesResueltosEnNDiasEspecialidad(Integer dias,Integer idEsp);
+      List<TecnicoDto> findTecnicosConMasIncidentesResueltosEnNDias(Integer dias);
+      List<TecnicoDto> findTecnicosConMasIncidentesResueltosEnNDiasEspecialidad(Integer dias,Integer idEsp);
 
-      List<Tecnico> findTecnicoMasRapidoResolvioLaIncidencia() ;
+      List<TecnicoDto> findTecnicoMasRapidoResolvioLaIncidencia() ;
 
 }

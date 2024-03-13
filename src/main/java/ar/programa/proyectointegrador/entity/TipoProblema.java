@@ -3,18 +3,24 @@ package ar.programa.proyectointegrador.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-
-
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 @Table(name="tipoproblema")
-/**
+/*
  @author pabloBarzaghi
  */
-public class TipoProblema extends BaseEntity{
+public class TipoProblema  implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer id;
 
 
     @Column(name="tipo")

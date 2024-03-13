@@ -1,24 +1,20 @@
 package ar.programa.proyectointegrador.service;
 
+
+import ar.programa.proyectointegrador.dto.TecnicoDto;
 import ar.programa.proyectointegrador.entity.Especialidad;
 import ar.programa.proyectointegrador.entity.Incidencia;
-
 import ar.programa.proyectointegrador.entity.Tecnico;
+import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.TecnicoRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-/**
+/*
  @author pabloBarzaghi
  */
 @Service
@@ -26,36 +22,51 @@ import java.util.Optional;
 public class TecnicoServiceImpl implements TecnicoService{
 
     private final TecnicoRepository tecnicoRepository;
-    @PersistenceContext
-    EntityManager entityManager;
+    private final IncidenciaService incidenciaService;
+    private final EspecialidadService especialidadService;
+   // @PersistenceContext
+   // EntityManager entityManager;
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public List<Tecnico> findAll() {
-        return tecnicoRepository.findAll();
+    public ResponseEntity<?> findAll() {
+        return   ResponseEntity.ok(MapperEntity.mapper.toDtoListTecnico(
+                tecnicoRepository.findAll()));
     }
     @Transactional
     @Override
-    public Tecnico save(Tecnico tecnico) {
-        return tecnicoRepository.save(tecnico);
+    public TecnicoDto save(TecnicoDto tecnicoDto) {
+
+         return MapperEntity.mapper.toDto(
+                tecnicoRepository.save(  MapperEntity.mapper.toBean(tecnicoDto))
+                            );
+
     }
 
     @Transactional
      @Override
-    public Tecnico update(Tecnico tecnico)  {
-        return tecnicoRepository.save(tecnico);
+    public TecnicoDto update(TecnicoDto tecnicoDto)  {
+        return MapperEntity.mapper.toDto(
+                tecnicoRepository.save(  MapperEntity.mapper.toBean(tecnicoDto))
+        );
     }
 
     @Transactional
     @Override
-    public Optional<Tecnico> findById(Integer integer)  {
-        return tecnicoRepository.findById(integer);
+    public Optional<TecnicoDto> findById(Integer integer)  {
+        Tecnico tecnico=tecnicoRepository.findById(integer).orElse(null);
+        if ( tecnico == null)
+            return Optional.ofNullable(TecnicoDto.builder().build());
+        else
+            return Optional.ofNullable(MapperEntity.mapper.toDto(tecnico));
     }
 
     @Transactional
     @Override
-    public void deleteById(Integer integer)  {
-        tecnicoRepository.deleteById(integer);
+    public void deleteById(Integer idTecnico)  {
+
+        incidenciaService.deleteAllTecnico(idTecnico);
+        tecnicoRepository.deleteById(idTecnico);
     }
 
     @Override
@@ -64,59 +75,80 @@ public class TecnicoServiceImpl implements TecnicoService{
     }
 @Transactional
     @Override
-    public Tecnico addIncidencia(Tecnico tecnico, Incidencia incidencia) {
-        List<Incidencia> listIncidencias=tecnico.getIncidencias();
-       if(!listIncidencias.contains(incidencia)) {
-            listIncidencias.add(incidencia);
-            tecnico.setIncidencias(listIncidencias);
-            incidencia.setTecnico(tecnico);
-             return tecnicoRepository.save(tecnico);
+    public TecnicoDto addIncidencia(Integer idTecnico , Integer idIncidencia ) {
+
+        Tecnico tecnico=tecnicoRepository.findById(idTecnico).orElse(null);
+
+         if(tecnico != null) {
+             //TODO: llamar a restTemp
+             Incidencia incidencia=MapperEntity.mapper.toBean(incidenciaService.findById(idIncidencia).get());
+            List<Incidencia> listIncidencias = tecnico.getIncidencias();
+            if ( !listIncidencias.contains(incidencia)){
+                listIncidencias.add(incidencia);
+                tecnico.setIncidencias(listIncidencias);
+                //TODO: llamar a restTemp
+                incidenciaService.updateTecnico(idIncidencia,
+                                              MapperEntity.mapper.toDto(tecnico)
+                                       );
+
+
+
+                return MapperEntity.mapper.toDto(tecnicoRepository.save(tecnico));
+            }
         }
         return null;
     }
     @Transactional
     @Override
-    public Tecnico addEspecialidad(Tecnico tecnico, Especialidad especialidad) {
-        List<Especialidad> listEspecialidades=tecnico.getEspecialidades();
-        if(!listEspecialidades.contains(especialidad)) {
-            listEspecialidades.add(especialidad);
-            tecnico.setEspecialidades(listEspecialidades);
+    public TecnicoDto addEspecialidad(Integer idTecnico, Integer IdEspecialidad) {
+        Tecnico tecnico=tecnicoRepository.findById(idTecnico).orElse(null);
+           if (tecnico != null) {
+               //TODO: llamar a restTemp
+               Especialidad especialidad =MapperEntity.mapper.toBean(especialidadService.findById(IdEspecialidad).get());
+               List<Especialidad> listEspecialidades=tecnico.getEspecialidades();
+            if(especialidad != null &&         ( !listEspecialidades.contains(especialidad))) {
+                listEspecialidades.add(especialidad);
+                tecnico.setEspecialidades(listEspecialidades);
+                return MapperEntity.mapper.toDto(tecnicoRepository.save(tecnico));
+            }
 
-            return tecnicoRepository.save(tecnico);
         }
 
      return null;
     }
     @Transactional
     @Override
-    public List<Tecnico> findTecnicosConMasIncidentesResueltosEnNDias(Integer dias) {
+    public List<TecnicoDto> findTecnicosConMasIncidentesResueltosEnNDias(Integer dias) {
         // Calcular las fechas
         LocalDateTime fechaFin = LocalDateTime.now();
         LocalDateTime fechaInicio = fechaFin.minusDays(dias);
 
-        return tecnicoRepository.findAllTecnicosByIncidenciaResueltaEntreFechas(fechaInicio,fechaFin);
+        return  MapperEntity.mapper.toDtoListTecnico(
+                tecnicoRepository.findAllTecnicosByIncidenciaResueltaEntreFechas(fechaInicio,fechaFin)
+        );
 
 
     }
-
-
-
 
     @Transactional
     @Override
-    public List<Tecnico> findTecnicosConMasIncidentesResueltosEnNDiasEspecialidad(Integer dias,Integer idEsp) {
+    public List<TecnicoDto> findTecnicosConMasIncidentesResueltosEnNDiasEspecialidad(Integer dias,
+                                                                                      Integer idEsp) {
 
         // Calcular las fechas
-
         LocalDateTime fechaFin = LocalDateTime.now();
         LocalDateTime fechaInicio = fechaFin.minusDays(dias);
-        return tecnicoRepository.findAllTecnicosByIncidenciaResueltaEntreFechasEspecialidad(fechaInicio, fechaFin, idEsp);
+        return   MapperEntity.mapper.toDtoListTecnico(
+                tecnicoRepository.findAllTecnicosByIncidenciaResueltaEntreFechasEspecialidad(fechaInicio, fechaFin, idEsp)
+                );
 
     }
 
     @Override
-    public List<Tecnico> findTecnicoMasRapidoResolvioLaIncidencia() {
-        return tecnicoRepository.findTecnicoMasRapidoResolvioLaIncidencia();
+    public List<TecnicoDto> findTecnicoMasRapidoResolvioLaIncidencia() {
+        return  MapperEntity.mapper.toDtoListTecnico(
+                tecnicoRepository.findTecnicoMasRapidoResolvioLaIncidencia()
+        );
     }
 
 }

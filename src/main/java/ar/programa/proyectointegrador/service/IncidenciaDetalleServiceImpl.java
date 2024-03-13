@@ -1,16 +1,17 @@
 package ar.programa.proyectointegrador.service;
 
+
+import ar.programa.proyectointegrador.dto.DetalleIncidenciaDto;
+import ar.programa.proyectointegrador.dto.IncidenciaDto;
 import ar.programa.proyectointegrador.entity.DetalleIncidencia;
-import ar.programa.proyectointegrador.entity.Incidencia;
+import ar.programa.proyectointegrador.mapper.MapperEntity;
 import ar.programa.proyectointegrador.repository.IncidenciaDetalleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-/**
+/*
  @author pabloBarzaghi
  */
 @Service
@@ -18,25 +19,38 @@ import java.util.Optional;
 public class IncidenciaDetalleServiceImpl implements IncidenciaDetalleService{
 
     private final IncidenciaDetalleRepository incidenciaDetalleRepository;
+
     @Override
-    public List<DetalleIncidencia> findAll() {
-        return incidenciaDetalleRepository.findAll();
+    public ResponseEntity<?> findAll() {
+        return   ResponseEntity.ok(MapperEntity.mapper.toDtoListDetalleIncidencia(
+                incidenciaDetalleRepository.findAll()));
     }
 
     @Override
-    public DetalleIncidencia save(DetalleIncidencia detalleIncidencia)  {
-        return incidenciaDetalleRepository.save(detalleIncidencia);
+    public DetalleIncidenciaDto save(DetalleIncidenciaDto detalleIncidenciaDto)  {
+
+        return MapperEntity.mapper.toDto(
+                incidenciaDetalleRepository.save(MapperEntity.mapper.toBean(detalleIncidenciaDto))
+                                         );
     }
 
     @Override
-    public DetalleIncidencia update(DetalleIncidencia detalleIncidencia) {
-        return incidenciaDetalleRepository.save(detalleIncidencia);
+    public DetalleIncidenciaDto update(DetalleIncidenciaDto detalleIncidenciaDto) {
+        return MapperEntity.mapper.toDto(
+                incidenciaDetalleRepository.save(MapperEntity.mapper.toBean(detalleIncidenciaDto))
+        );
+    }
+    @Override
+    public Optional<DetalleIncidenciaDto> findById(Integer integer)  {
+
+        DetalleIncidencia detalleIncidencia= incidenciaDetalleRepository.findById(integer).orElse(null);
+
+        if ( detalleIncidencia == null)
+            return Optional.ofNullable(DetalleIncidenciaDto.builder().build());
+        else
+            return Optional.ofNullable(MapperEntity.mapper.toDto(detalleIncidencia));
     }
 
-    @Override
-    public Optional<DetalleIncidencia> findById(Integer integer)  {
-        return incidenciaDetalleRepository.findById(integer);
-    }
 
     @Override
     public void deleteById(Integer integer)  {
@@ -49,4 +63,11 @@ public class IncidenciaDetalleServiceImpl implements IncidenciaDetalleService{
     }
 
 
+    @Override
+    public DetalleIncidenciaDto save(IncidenciaDto incidenciaDto, DetalleIncidenciaDto detalleIncidenciaDto) {
+
+        DetalleIncidencia detalleIncidencia = MapperEntity.mapper.toBean(detalleIncidenciaDto);
+        detalleIncidencia.setIncidencia(MapperEntity.mapper.toBean(incidenciaDto));
+        return MapperEntity.mapper.toDto( incidenciaDetalleRepository.save(detalleIncidencia));
+    }
 }
